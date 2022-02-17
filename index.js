@@ -1,37 +1,7 @@
-//document.getElementById("nameP1").innerHTML  = player1;
-
-// document.querySelectorAll("[id='nameP1']").innerHTML  = player1;
-// document.querySelectorAll("#nameP1").forEach(
-//   function (name){
-//     name.innerHTML = player1;
-//   }
-// )
-//
-// for(var i=0; i<document.querySelectorAll("#nameP1").length;i++){
-//   document.querySelectorAll("#nameP1")[i].innerHTML = player1;
-// }
-//Player's name
-// var player1 = prompt("Name of Player1:");
-// document.querySelectorAll("#nameP1").forEach(
-//   (name) => name.innerHTML = player1);
-//
-//
-// var player2 = prompt("Name of Player2:");
-// //document.getElementById("nameP2").innerHTML  = player2;
-// document.querySelectorAll("#nameP2").forEach(
-//   (name) => name.innerHTML = player2);
-
-// Create Player
-// const player = (name) =>{
-//   name = name;
-//
-// }
-
-//Player's name
-
 
 //board
 const statusDisplay = document.querySelector('.game--status');
+var turn = 0;
 var sd = new Audio("Music.mp3");
 var mP1 = 0;
 var mP2 = 0;
@@ -39,7 +9,8 @@ var wonP1Marks = document.querySelector("#player1M");
 var wonP2Marks = document.querySelector("#player2M");
 var player1Name = "";
 var player2Name = "";
-var ai = "Computer";
+var ai = "computer";
+var aiEnable = false;
 var cell = $('.cell');
 let gameActive = true;
 // let currentPlayer = "X";
@@ -50,12 +21,10 @@ var board = new Array();
 var sizeOfBoard = 0;
 var totalSizeOfBoard = 0;
 let gameState = [];
-// var winCount;
 
-// const winningMessage = () => ` ${currentPlayer === "X" ? player1Name : player2Name} has won!`;
+
 const winningMessage = () => ` ${currentPlayer === "🐢" ? player1Name : player2Name} has won!`;
 const drawMessage = () => `Game ended in a draw!`;
-// const currentPlayerTurn = () => `It's ${currentPlayer === "X" ? player1Name : player2Name}'s turn`;
 const currentPlayerTurn = () => `It's ${currentPlayer === "🐢" ? player1Name : player2Name}'s turn`;
 // Without Reflect
 var form = document.getElementById("myForm");
@@ -76,32 +45,32 @@ function gameDetailFunction() {
     };
 
   if (document.getElementById('option1').checked) {
-    alert('SM radio button is checked');
+    aiEnable = true;
+    console.log(aiEnable);
   } else if (document.getElementById('option2').checked) {
-    alert('MM radio button is checked');
+    aiEnable = false;
+    console.log(aiEnable);
   }
 
 }
 
-//FUNCTION CREATE RANDOM NUMBER
-function randomNumber() {
-  console.log(Math.floor(Math.random() * totalSizeOfBoard))
-  return Math.floor(Math.random() * totalSizeOfBoard);
-} //end of function
+//ai
+function aiTurn() {
+  var ok = false;
+  var randomMove;
 
-// $(this).text(playerTurn);
-//
-//     // START AI
-//     for (i=0; i < 10; i++) {
-//   var random = randomNumber();
-// if (buttons[random].innerHTML === "X" || buttons[random].innerHTML === "O") {
-//   continue;
-// }
-//   else {
-//    buttons[random].innerHTML = computerTurn;
-//    break;
-//   }
-// } //end of AI
+  while(!ok) {
+    randomMove = Math.floor(Math.random() * totalSizeOfBoard);
+    if( document.getElementsByClassName('cell')[randomMove].innerText == "" ) {
+      // We have found it! Stop looking for an empty cell
+      console.log(randomMove);
+      ok = true;
+    }
+  }
+  document.getElementsByClassName('cell')[randomMove].click();
+ 
+}
+
 
 function handleForm(event) {
   event.preventDefault();
@@ -110,97 +79,7 @@ form.addEventListener('submit', handleForm);
 
 statusDisplay.innerHTML = currentPlayerTurn();
 
-// const winningConditions = [
-//     [0, 1, 2],
-//     [3, 4, 5],
-//     [6, 7, 8],
-//     [0, 3, 6],
-//     [1, 4, 7],
-//     [2, 5, 8],
-//     [0, 4, 8],
-//     [2, 4, 6]
-// ];
 
-// function checkWiningCondition(row, col) {
-//   let n = sizeOfBoard;
-//         //check col
-//       for(var i = 0; i < n; i++){
-//           if(board[row][i] != board[row][col])
-//               break;
-//           if(i == n-1){
-//               //report win for s
-//               console.log("win");
-//               var num1 = (row*n);
-//               for (let i = 0; i < n; i++) {
-//                 document.getElementsByClassName('cell')[num1+i].style.backgroundColor = "#FFDB58";
-//               }
-//           }
-//       }
-//
-//       //check row
-//       for(var i = 0; i < n; i++){
-//           if(board[i][col] != board[row][col])
-//               break;
-//           if(i == n-1){
-//               //report win for s
-//               console.log("win");
-//               num2 = parseInt(col);
-//               for (let i = 0; i < n; i++) {
-//                 console.log(n);
-//                 document.getElementsByClassName('cell')[num2].style.backgroundColor = "#FFDB58";
-//                 num2 += n;
-//                 console.log(num2);
-//               }
-//           }
-//       }
-//
-//       //check diag
-//       if(row == col){
-//           //we're on a diagonal
-//           for(var i = 0; i < n; i++){
-//               if(board[i][i] != board[row][col])
-//                   break;
-//               if(i == n-1){
-//                   //report win for s
-//                   console.log("win");
-//                   var num3 = parseInt(0);
-//                   var addNumber = parseInt(n+1)
-//                   for (let i = 0; i < n; i++) {
-//                     console.log(n);
-//                     document.getElementsByClassName('cell')[num3].style.backgroundColor = "#FFDB58";
-//                     num3 += addNumber;
-//                     console.log(num3);
-//                   }
-//               }
-//           }
-//       }
-//
-//       //check antidiag
-//       if(row + col == n - 1){
-//           for(var i = 0; i < n; i++){
-//               if(board[i][(n-1)-i] != board[row][col])
-//                   break;
-//               if(i == n-1){
-//                   //report win for s
-//                   console.log("win");
-//                   var num4 = parseInt(3);
-//                   var minusNumber = parseInt(n-1)
-//                   for (let i = 0; i < n; i++) {
-//                     document.getElementsByClassName('cell')[num4].style.backgroundColor = "#FFDB58";
-//                     num4 += minusNumber;
-//                     console.log(num4);
-//                   }
-//               }
-//           }
-//       }
-//
-//       //check draw
-//       // if(moveCount == (Math.pow(n, 2) - 1)){
-//       //     //report draw
-//       // }
-//
-//
-// }
 
 function handleCellPlayed(clickedCell, clickedCellIndex) {
   gameState[clickedCellIndex] = currentPlayer;
@@ -217,22 +96,6 @@ function handleResultValidation(row, col) {
   let roundWon = false;
   board[row][col] = currentPlayer;
 
-  // for (let i = 0; i <= 7; i++) {
-  //   const winCondition = winningConditions[i];
-  //   let a = gameState[winCondition[0]];
-  //   let b = gameState[winCondition[1]];
-  //   let c = gameState[winCondition[2]];
-  //   if (a === '' || b === '' || c === '') {
-  //     continue;
-  //   }
-  //   if (a === b && b === c) {
-  //     roundWon = true;
-  //     for (let i = 0; i < 3; i++) {
-  //       document.getElementsByClassName('cell')[winCondition[i]].style.backgroundColor = "#FFDB58";
-  //     }
-  //     break;
-  //   }
-  // }
   let n = sizeOfBoard;
   //check col
   for (var i = 0; i < n; i++) {
@@ -312,7 +175,6 @@ function handleResultValidation(row, col) {
           document.getElementsByClassName('cell')[num4].style.backgroundColor = "#FFDB58";
           num4 += minusNumber;
         }
-        break;
       }
     }
   }
@@ -342,7 +204,17 @@ function handleResultValidation(row, col) {
     gameActive = false;
     return;
   }
+  turn++;
   handlePlayerChange();
+  console.log(turn);
+  if ( aiEnable && turn%2 !== 0 ){
+      console.log(aiEnable && turn%2 !== 0);
+      aiTurn();
+  }
+
+
+
+  // break;
 }
 
 function handleCellClick(clickedCellEvent) {
@@ -357,11 +229,9 @@ function handleCellClick(clickedCellEvent) {
   var col = clickedCell.getAttribute("col");
 
 
-
   handleCellPlayed(clickedCell, clickedCellIndex);
-  handleResultValidation(row, col)
-  // handleResultValidation();
-}
+  handleResultValidation(row, col);
+  }
 
 function handleRestartGame() {
   gameActive = true;
@@ -371,6 +241,7 @@ function handleRestartGame() {
   sizeOfBoard;
   gameState = [];
   board = new Array(sizeOfBoard);
+  turn=0;
   for (var i = 0; i < sizeOfBoard; i++) {
     board[i] = new Array(sizeOfBoard);
   }
@@ -392,18 +263,11 @@ function handleNewGame() {
   mP2 = 0;
   sizeOfBoard = 0;
   gameActive = true;
-  // currentPlayer = "X";
+  turn=0;
   currentPlayer = "🐢";
-  // gameState = ["", "", "", "", "", "", "", "", ""];
   gameState = [];
   sd.pause();
-  // statusDisplay.innerHTML = currentPlayerTurn();
-  // for (let i = 0; i <totalSizeOfBoard; i++) {
-  //   document.getElementsByClassName('cell')[i].style.backgroundColor = "#393E46";
-  // }
-  // document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "");
-
-
+  
 }
 
 function handleResetMatch() {
@@ -495,8 +359,6 @@ $(document).ready(function() {
 
   var buildBoard = function() {
     // Execute game logic based on cached select values
-    // Game.newBoard(size);
-    // Game.winCount(winCount);
     sd.currentTime=0;
     sd.play();
     var dimension = (100 / size) + '%'; // To set cell width
@@ -523,16 +385,5 @@ $(document).ready(function() {
     return true;
   };
 
-  // var takeMove = function() {
-  //   var row = $(this).attr("row");
-  //   var col = $(this).attr("col");
-  //   board[row][col] = currentPlayer;
-  //
-  //   handleResultValidation(row, col)
-  //
-  //   return true;
-  // }
-
   $buildButton.on('click', buildBoard);
 });
-
